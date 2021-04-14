@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS day_students_details (
 	residence_address text,
 	residence_telephone text,
 	mailing_postal_area smallint,
-	current_address text,
-	telephone_number text,
+	mailing_address text,
+	mailing_telephone text,
 	cell_phone_number text,
 	personal_email text,
 	school_email text,
@@ -75,5 +75,5 @@ CREATE TABLE IF NOT EXISTS day_students_details (
 	mother_education_level text,
 	mother_telephone_number text,
 	mother_occupation text,
-	mother_employer text,
+	mother_employer text
 );
