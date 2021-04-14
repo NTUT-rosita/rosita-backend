@@ -5,25 +5,23 @@ package graphql
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/NTUT-rosita/rosita-backend/internal/api/graphql/generated"
 	"github.com/NTUT-rosita/rosita-backend/internal/api/graphql/model"
+	"github.com/NTUT-rosita/rosita-backend/internal/pkg/sliceConverter"
 )
 
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
-}
+func (r *queryResolver) DayStudentDetailsPossibleValue(ctx context.Context) (*model.DayStudentDetailsPossibleValue, error) {
+	distinctAcademicYear, err := r.Queries.GetDistinctAcademicYear(ctx)
 
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
-}
+	if err != nil {
+		return nil, err
+	}
 
-// Mutation returns generated.MutationResolver implementation.
-func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
+	return &model.DayStudentDetailsPossibleValue{AcademicYear: sliceConverter.Int16ToInt(distinctAcademicYear)}, err
+}
 
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
-type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
