@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS day_students_details (
 	academic_year smallint,
 	semester smallint,
 	school_system text,
-	department_group_number text,
+	departmentgo text,
 	department_name text,
 	class text,
 	student_id text,
