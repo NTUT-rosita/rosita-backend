@@ -6,19 +6,53 @@ package graphql
 import (
 	"context"
 
+	"github.com/99designs/gqlgen/graphql"
 	"github.com/NTUT-rosita/rosita-backend/internal/api/graphql/generated"
 	"github.com/NTUT-rosita/rosita-backend/internal/api/graphql/model"
 	"github.com/NTUT-rosita/rosita-backend/internal/pkg/sliceConverter"
 )
 
 func (r *queryResolver) DayStudentDetailsPossibleValue(ctx context.Context) (*model.DayStudentDetailsPossibleValue, error) {
-	distinctAcademicYear, err := r.Queries.GetDistinctAcademicYear(ctx)
 
-	if err != nil {
-		return nil, err
+	result := &model.DayStudentDetailsPossibleValue{}
+
+	for _, field := range graphql.CollectAllFields(ctx) {
+		switch field {
+		case "collegeType":
+			distinctCollegeType, err := r.Queries.GetDistinctCollegeType(ctx)
+			if err != nil {
+				return nil, err
+			}
+			result.CollegeType = sliceConverter.NullStringToString(distinctCollegeType)
+		case "academicYear":
+			distinctAcademicYear, err := r.Queries.GetDistinctAcademicYear(ctx)
+			if err != nil {
+				return nil, err
+			}
+			result.AcademicYear = sliceConverter.Int16ToInt(distinctAcademicYear)
+		case "semester":
+			distinctSemester, err := r.Queries.GetDistinctSemester(ctx)
+			if err != nil {
+				return nil, err
+			}
+			result.Semester = sliceConverter.Int16ToInt(distinctSemester)
+
+		case "schoolSystem":
+			distinctSchoolSystem, err := r.Queries.GetDistinctSchoolSystem(ctx)
+			if err != nil {
+				return nil, err
+			}
+			result.SchoolSystem = sliceConverter.NullStringToString(distinctSchoolSystem)
+		case "departmentName":
+			distinctDepartmentName, err := r.Queries.GetDistinctDepartmentName(ctx)
+			if err != nil {
+				return nil, err
+			}
+			result.DepartmentName = sliceConverter.NullStringToString(distinctDepartmentName)
+		}
 	}
 
-	return &model.DayStudentDetailsPossibleValue{AcademicYear: sliceConverter.Int16ToInt(distinctAcademicYear)}, err
+	return result, nil
 }
 
 // Query returns generated.QueryResolver implementation.

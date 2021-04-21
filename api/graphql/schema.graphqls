@@ -7,5 +7,9 @@ type Query {
 }
 
 type DayStudentDetailsPossibleValue {
+  collegeType: [String!]
   academicYear: [Int!]
+  semester: [Int!]
+  schoolSystem: [String!]
+  departmentName: [String!]
 }

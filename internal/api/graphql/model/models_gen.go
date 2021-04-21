@@ -3,5 +3,9 @@
 package model
 
 type DayStudentDetailsPossibleValue struct {
-	AcademicYear []int `json:"academicYear"`
+	CollegeType    []string `json:"collegeType"`
+	AcademicYear   []int    `json:"academicYear"`
+	Semester       []int    `json:"semester"`
+	SchoolSystem   []string `json:"schoolSystem"`
+	DepartmentName []string `json:"departmentName"`
 }

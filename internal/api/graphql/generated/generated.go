@@ -42,7 +42,11 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	DayStudentDetailsPossibleValue struct {
-		AcademicYear func(childComplexity int) int
+		AcademicYear   func(childComplexity int) int
+		CollegeType    func(childComplexity int) int
+		DepartmentName func(childComplexity int) int
+		SchoolSystem   func(childComplexity int) int
+		Semester       func(childComplexity int) int
 	}
 
 	Query struct {
@@ -75,6 +79,34 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.DayStudentDetailsPossibleValue.AcademicYear(childComplexity), true
+
+	case "DayStudentDetailsPossibleValue.collegeType":
+		if e.complexity.DayStudentDetailsPossibleValue.CollegeType == nil {
+			break
+		}
+
+		return e.complexity.DayStudentDetailsPossibleValue.CollegeType(childComplexity), true
+
+	case "DayStudentDetailsPossibleValue.departmentName":
+		if e.complexity.DayStudentDetailsPossibleValue.DepartmentName == nil {
+			break
+		}
+
+		return e.complexity.DayStudentDetailsPossibleValue.DepartmentName(childComplexity), true
+
+	case "DayStudentDetailsPossibleValue.schoolSystem":
+		if e.complexity.DayStudentDetailsPossibleValue.SchoolSystem == nil {
+			break
+		}
+
+		return e.complexity.DayStudentDetailsPossibleValue.SchoolSystem(childComplexity), true
+
+	case "DayStudentDetailsPossibleValue.semester":
+		if e.complexity.DayStudentDetailsPossibleValue.Semester == nil {
+			break
+		}
+
+		return e.complexity.DayStudentDetailsPossibleValue.Semester(childComplexity), true
 
 	case "Query.dayStudentDetailsPossibleValue":
 		if e.complexity.Query.DayStudentDetailsPossibleValue == nil {
@@ -142,7 +174,11 @@ type Query {
 }
 
 type DayStudentDetailsPossibleValue {
+  collegeType: [String!]
   academicYear: [Int!]
+  semester: [Int!]
+  schoolSystem: [String!]
+  departmentName: [String!]
 }
 `, BuiltIn: false},
 }
@@ -205,6 +241,38 @@ func (ec *executionContext) field___Type_fields_args(ctx context.Context, rawArg
 
 // region    **************************** field.gotpl *****************************
 
+func (ec *executionContext) _DayStudentDetailsPossibleValue_collegeType(ctx context.Context, field graphql.CollectedField, obj *model.DayStudentDetailsPossibleValue) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DayStudentDetailsPossibleValue",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CollegeType, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _DayStudentDetailsPossibleValue_academicYear(ctx context.Context, field graphql.CollectedField, obj *model.DayStudentDetailsPossibleValue) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -235,6 +303,102 @@ func (ec *executionContext) _DayStudentDetailsPossibleValue_academicYear(ctx con
 	res := resTmp.([]int)
 	fc.Result = res
 	return ec.marshalOInt2ᚕintᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DayStudentDetailsPossibleValue_semester(ctx context.Context, field graphql.CollectedField, obj *model.DayStudentDetailsPossibleValue) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DayStudentDetailsPossibleValue",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Semester, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int)
+	fc.Result = res
+	return ec.marshalOInt2ᚕintᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DayStudentDetailsPossibleValue_schoolSystem(ctx context.Context, field graphql.CollectedField, obj *model.DayStudentDetailsPossibleValue) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DayStudentDetailsPossibleValue",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.SchoolSystem, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DayStudentDetailsPossibleValue_departmentName(ctx context.Context, field graphql.CollectedField, obj *model.DayStudentDetailsPossibleValue) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DayStudentDetailsPossibleValue",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DepartmentName, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]string)
+	fc.Result = res
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_dayStudentDetailsPossibleValue(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1446,8 +1610,16 @@ func (ec *executionContext) _DayStudentDetailsPossibleValue(ctx context.Context,
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("DayStudentDetailsPossibleValue")
+		case "collegeType":
+			out.Values[i] = ec._DayStudentDetailsPossibleValue_collegeType(ctx, field, obj)
 		case "academicYear":
 			out.Values[i] = ec._DayStudentDetailsPossibleValue_academicYear(ctx, field, obj)
+		case "semester":
+			out.Values[i] = ec._DayStudentDetailsPossibleValue_semester(ctx, field, obj)
+		case "schoolSystem":
+			out.Values[i] = ec._DayStudentDetailsPossibleValue_schoolSystem(ctx, field, obj)
+		case "departmentName":
+			out.Values[i] = ec._DayStudentDetailsPossibleValue_departmentName(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2093,6 +2265,42 @@ func (ec *executionContext) unmarshalOString2string(ctx context.Context, v inter
 
 func (ec *executionContext) marshalOString2string(ctx context.Context, sel ast.SelectionSet, v string) graphql.Marshaler {
 	return graphql.MarshalString(v)
+}
+
+func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		if tmp1, ok := v.([]interface{}); ok {
+			vSlice = tmp1
+		} else {
+			vSlice = []interface{}{v}
+		}
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	return ret
 }
 
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v interface{}) (*string, error) {

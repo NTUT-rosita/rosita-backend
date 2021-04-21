@@ -25,6 +25,18 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.getDistinctAcademicYearStmt, err = db.PrepareContext(ctx, getDistinctAcademicYear); err != nil {
 		return nil, fmt.Errorf("error preparing query GetDistinctAcademicYear: %w", err)
 	}
+	if q.getDistinctCollegeTypeStmt, err = db.PrepareContext(ctx, getDistinctCollegeType); err != nil {
+		return nil, fmt.Errorf("error preparing query GetDistinctCollegeType: %w", err)
+	}
+	if q.getDistinctDepartmentNameStmt, err = db.PrepareContext(ctx, getDistinctDepartmentName); err != nil {
+		return nil, fmt.Errorf("error preparing query GetDistinctDepartmentName: %w", err)
+	}
+	if q.getDistinctSchoolSystemStmt, err = db.PrepareContext(ctx, getDistinctSchoolSystem); err != nil {
+		return nil, fmt.Errorf("error preparing query GetDistinctSchoolSystem: %w", err)
+	}
+	if q.getDistinctSemesterStmt, err = db.PrepareContext(ctx, getDistinctSemester); err != nil {
+		return nil, fmt.Errorf("error preparing query GetDistinctSemester: %w", err)
+	}
 	return &q, nil
 }
 
@@ -33,6 +45,26 @@ func (q *Queries) Close() error {
 	if q.getDistinctAcademicYearStmt != nil {
 		if cerr := q.getDistinctAcademicYearStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing getDistinctAcademicYearStmt: %w", cerr)
+		}
+	}
+	if q.getDistinctCollegeTypeStmt != nil {
+		if cerr := q.getDistinctCollegeTypeStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getDistinctCollegeTypeStmt: %w", cerr)
+		}
+	}
+	if q.getDistinctDepartmentNameStmt != nil {
+		if cerr := q.getDistinctDepartmentNameStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getDistinctDepartmentNameStmt: %w", cerr)
+		}
+	}
+	if q.getDistinctSchoolSystemStmt != nil {
+		if cerr := q.getDistinctSchoolSystemStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getDistinctSchoolSystemStmt: %w", cerr)
+		}
+	}
+	if q.getDistinctSemesterStmt != nil {
+		if cerr := q.getDistinctSemesterStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getDistinctSemesterStmt: %w", cerr)
 		}
 	}
 	return err
@@ -72,15 +104,23 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                          DBTX
-	tx                          *sql.Tx
-	getDistinctAcademicYearStmt *sql.Stmt
+	db                            DBTX
+	tx                            *sql.Tx
+	getDistinctAcademicYearStmt   *sql.Stmt
+	getDistinctCollegeTypeStmt    *sql.Stmt
+	getDistinctDepartmentNameStmt *sql.Stmt
+	getDistinctSchoolSystemStmt   *sql.Stmt
+	getDistinctSemesterStmt       *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                          tx,
-		tx:                          tx,
-		getDistinctAcademicYearStmt: q.getDistinctAcademicYearStmt,
+		db:                            tx,
+		tx:                            tx,
+		getDistinctAcademicYearStmt:   q.getDistinctAcademicYearStmt,
+		getDistinctCollegeTypeStmt:    q.getDistinctCollegeTypeStmt,
+		getDistinctDepartmentNameStmt: q.getDistinctDepartmentNameStmt,
+		getDistinctSchoolSystemStmt:   q.getDistinctSchoolSystemStmt,
+		getDistinctSemesterStmt:       q.getDistinctSemesterStmt,
 	}
 }
