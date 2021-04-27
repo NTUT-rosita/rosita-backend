@@ -8,6 +8,31 @@ import (
 	"database/sql"
 )
 
+const count = `-- name: Count :one
+SELECT Count(*) FROM day_students_details Where (college_type = $1 OR $1 is NULL) AND (academic_year = $2 OR NULLIF($2, 0) is NULL) AND(semester = $3 OR NULLIF($3,0) is NULL) AND(school_system = $4 OR $4 is NULL) AND(department_name = $5 OR $5 is NULL)
+`
+
+type CountParams struct {
+	Collegetype    sql.NullString `json:"collegetype"`
+	Academicyear   int16          `json:"academicyear"`
+	Semester       int16          `json:"semester"`
+	Schoolsystem   sql.NullString `json:"schoolsystem"`
+	Departmentname sql.NullString `json:"departmentname"`
+}
+
+func (q *Queries) Count(ctx context.Context, arg CountParams) (int64, error) {
+	row := q.queryRow(ctx, q.countStmt, count,
+		arg.Collegetype,
+		arg.Academicyear,
+		arg.Semester,
+		arg.Schoolsystem,
+		arg.Departmentname,
+	)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const getDistinctAcademicYear = `-- name: GetDistinctAcademicYear :many
 SELECT DISTINCT academic_year FROM day_students_details
 `

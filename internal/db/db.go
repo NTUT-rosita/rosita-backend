@@ -22,6 +22,9 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
+	if q.countStmt, err = db.PrepareContext(ctx, count); err != nil {
+		return nil, fmt.Errorf("error preparing query Count: %w", err)
+	}
 	if q.getDistinctAcademicYearStmt, err = db.PrepareContext(ctx, getDistinctAcademicYear); err != nil {
 		return nil, fmt.Errorf("error preparing query GetDistinctAcademicYear: %w", err)
 	}
@@ -42,6 +45,11 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 
 func (q *Queries) Close() error {
 	var err error
+	if q.countStmt != nil {
+		if cerr := q.countStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing countStmt: %w", cerr)
+		}
+	}
 	if q.getDistinctAcademicYearStmt != nil {
 		if cerr := q.getDistinctAcademicYearStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing getDistinctAcademicYearStmt: %w", cerr)
@@ -106,6 +114,7 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 type Queries struct {
 	db                            DBTX
 	tx                            *sql.Tx
+	countStmt                     *sql.Stmt
 	getDistinctAcademicYearStmt   *sql.Stmt
 	getDistinctCollegeTypeStmt    *sql.Stmt
 	getDistinctDepartmentNameStmt *sql.Stmt
@@ -117,6 +126,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
 		db:                            tx,
 		tx:                            tx,
+		countStmt:                     q.countStmt,
 		getDistinctAcademicYearStmt:   q.getDistinctAcademicYearStmt,
 		getDistinctCollegeTypeStmt:    q.getDistinctCollegeTypeStmt,
 		getDistinctDepartmentNameStmt: q.getDistinctDepartmentNameStmt,

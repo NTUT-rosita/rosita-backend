@@ -4,6 +4,7 @@
 
 type Query {
   dayStudentDetailsPossibleValue: DayStudentDetailsPossibleValue
+  dayStudentDetailsCount(where: DayStudentDetailsInput): Int!
 }
 
 type DayStudentDetailsPossibleValue {
@@ -12,4 +13,12 @@ type DayStudentDetailsPossibleValue {
   semester: [Int!]
   schoolSystem: [String!]
   departmentName: [String!]
+}
+
+input DayStudentDetailsInput {
+  collegeType: String
+  academicYear: Int
+  semester: Int
+  schoolSystem: String
+  departmentName: String
 }

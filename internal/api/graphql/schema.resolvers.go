@@ -9,11 +9,11 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/NTUT-rosita/rosita-backend/internal/api/graphql/generated"
 	"github.com/NTUT-rosita/rosita-backend/internal/api/graphql/model"
+	"github.com/NTUT-rosita/rosita-backend/internal/db"
 	"github.com/NTUT-rosita/rosita-backend/internal/pkg/sliceConverter"
 )
 
 func (r *queryResolver) DayStudentDetailsPossibleValue(ctx context.Context) (*model.DayStudentDetailsPossibleValue, error) {
-
 	result := &model.DayStudentDetailsPossibleValue{}
 
 	for _, field := range graphql.CollectAllFields(ctx) {
@@ -53,6 +53,37 @@ func (r *queryResolver) DayStudentDetailsPossibleValue(ctx context.Context) (*mo
 	}
 
 	return result, nil
+}
+
+func (r *queryResolver) DayStudentDetailsCount(ctx context.Context, where *model.DayStudentDetailsInput) (int, error) {
+	params := db.CountParams{}
+	if where != nil {
+		if where.CollegeType != nil {
+			params.Collegetype.Valid = true
+			params.Collegetype.String = *where.CollegeType
+		}
+		if where.AcademicYear != nil {
+			params.Academicyear = int16(*where.AcademicYear)
+		}
+		if where.Semester != nil {
+			params.Semester = int16(*where.Semester)
+		}
+		if where.SchoolSystem != nil {
+			params.Schoolsystem.Valid = true
+			params.Schoolsystem.String = *where.SchoolSystem
+		}
+		if where.DepartmentName != nil {
+			params.Departmentname.Valid = true
+			params.Departmentname.String = *where.DepartmentName
+		}
+	}
+
+	result, err := r.Queries.Count(ctx, params)
+	if err != nil {
+		return 0, err
+	}
+
+	return int(result), nil
 }
 
 // Query returns generated.QueryResolver implementation.
